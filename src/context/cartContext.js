@@ -24,10 +24,6 @@ export default function ShopProvider({ children }) {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(checkoutUrl);
-  }, [checkoutUrl]);
-
   async function addToCart(newItem) {
     setCartOpen(true);
 
