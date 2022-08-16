@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
 import { formatter } from "../../utils/helpers";
 import ProductOptions from "./ProductOptions";
@@ -34,10 +34,14 @@ export const ProductForm = ({ product }) => {
 
   const [selectedVariant, setSelectedVariant] = useState(allVariantOptions[0]);
   const [selectedOptions, setSelectedOptions] = useState(defaultValues);
+  const [selecteVariantQuantity, setSelecteVariantQuantity] = useState(1);
 
   function setOptions(name, value) {
     setSelectedOptions((prevState) => {
-      return { ...prevState, [name]: value };
+      return {
+        ...prevState,
+        [name]: value,
+      };
     });
 
     const selection = {
@@ -50,11 +54,33 @@ export const ProductForm = ({ product }) => {
         setSelectedVariant(item);
       }
     });
+
+    setSelectedVariant((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+        variantQuantity: selecteVariantQuantity,
+      };
+    });
   }
+
+  useEffect(() => {
+    // This is fireing when the quantity changes.
+    setSelectedVariant((prevState) => {
+      return {
+        ...prevState,
+        variantQuantity: selecteVariantQuantity,
+      };
+    });
+  }, [selecteVariantQuantity]);
 
   return (
     <div className="px-12">
-      <SelectedDEVTOOL selectedVariant={selectedVariant} />
+      <SelectedDEVTOOL
+        selectedVariant={selectedVariant}
+        selectedOptions={selectedOptions}
+        selecteVariantQuantity={selecteVariantQuantity}
+      />
 
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="relative w-full aspect-square">
@@ -72,6 +98,24 @@ export const ProductForm = ({ product }) => {
           </h1>
           <p className="mt-2">{product.description}</p>
 
+          <div className="mt-6">
+            <label className="text-xl font-semibold" htmlFor="quantity">
+              Quantity
+            </label>
+            <input
+              onChange={(event) =>
+                setSelecteVariantQuantity(+event.target.value)
+              }
+              type="number"
+              id="quantity"
+              name="variantQuantity"
+              defaultValue="1"
+              min="1"
+              max="50"
+              className="w-20 p-2 ml-2 border-2 border-gray-900"
+            />
+          </div>
+
           <div className="">
             {product.options.map(({ name, values }) => (
               <ProductOptions
@@ -86,7 +130,7 @@ export const ProductForm = ({ product }) => {
               />
             ))}
             <button
-              onClick={() => addToCart(selectedVariant)}
+              onClick={() => addToCart(selectedVariant, selecteVariantQuantity)}
               className="w-full px-2 py-3 mt-6 text-xl font-bold text-white bg-black hover:bg-gray-800"
             >
               Add to Cart

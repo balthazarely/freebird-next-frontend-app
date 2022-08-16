@@ -14,7 +14,6 @@ export default function ShopProvider({ children }) {
   useEffect(() => {
     if (localStorage.checkout_id) {
       const cartObject = JSON.parse(localStorage.checkout_id);
-      console.log(cartObject);
       if (cartObject[0].id) {
         setCart([cartObject[0]]);
       } else if (cartObject[0].length > 0) {
@@ -45,9 +44,14 @@ export default function ShopProvider({ children }) {
       let newCart = [];
       let added = false;
 
+      console.log(cart, "item in cart");
+      console.log(newItem, "newItem in cart");
+
       cart.map((item) => {
         if (item.id === newItem.id) {
-          item.variantQuantity++;
+          console.log(item.variantQuantity, "item.variantQuantity");
+          console.log(newItem.variantQuantity, "newItem.variantQuantity");
+          item.variantQuantity = item.variantQuantity + newItem.variantQuantity;
           newCart = [...cart];
           added = true;
         }
