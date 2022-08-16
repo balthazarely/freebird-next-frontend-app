@@ -33,9 +33,9 @@ export default function NavDropdown() {
         >
           <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
-              {navLinks.map((linkItem) => {
+              {navLinks.map((linkItem, idx) => {
                 return (
-                  <Menu.Item>
+                  <Menu.Item key={idx}>
                     {({ active }) => (
                       <Link href={linkItem.link}>
                         <button
