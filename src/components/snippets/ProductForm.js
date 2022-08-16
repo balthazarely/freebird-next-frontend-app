@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import { CartContext } from "../../context/cartContext";
 import { formatter } from "../../utils/helpers";
 import ProductOptions from "./ProductOptions";
+import Image from "next/image";
+import SelectedDEVTOOL from "./SelectedDEVTOOL";
 
 export const ProductForm = ({ product }) => {
   const { addToCart } = useContext(CartContext);
@@ -52,39 +54,45 @@ export const ProductForm = ({ product }) => {
 
   return (
     <div className="px-12">
-      {/* <div className="w-full bg-slate-200">
-        <div>
-          variant selected:{" "}
-          <span className="font-bold bg-white">
-            {selectedVariant.variantTitle}
-          </span>
-        </div>
+      <SelectedDEVTOOL selectedVariant={selectedVariant} />
 
-      </div> */}
-      <h1 className="text-4xl font-bold ">{product.title}</h1>
-      <h1 className="text-xl font-bold text-gray-500 ">
-        {formatter.format(selectedVariant.variantPrice)}
-      </h1>
-
-      <div className="">
-        {product.options.map(({ name, values }) => (
-          <ProductOptions
-            key={`key-${name}`}
-            name={name}
-            values={values}
-            selectedOptions={selectedOptions}
-            setOptions={setOptions}
-            selectedVariant={selectedVariant}
-            //   productInventory={productInventory}
-            //   available={available}
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+        <div className="relative w-full aspect-square">
+          <Image
+            src={selectedVariant.image}
+            alt={"imagehere"}
+            layout="fill"
+            objectFit="cover"
           />
-        ))}
-        <button
-          onClick={() => addToCart(selectedVariant)}
-          className="w-full px-2 py-3 mt-6 text-xl font-bold text-white bg-black hover:bg-gray-800"
-        >
-          Add to Cart
-        </button>
+        </div>
+        <div>
+          <h1 className="text-4xl font-bold ">{product.title}</h1>
+          <h1 className="text-xl font-bold text-gray-500 ">
+            {formatter.format(selectedVariant.variantPrice)}
+          </h1>
+          <p className="mt-2">{product.description}</p>
+
+          <div className="">
+            {product.options.map(({ name, values }) => (
+              <ProductOptions
+                key={`key-${name}`}
+                name={name}
+                values={values}
+                selectedOptions={selectedOptions}
+                setOptions={setOptions}
+                selectedVariant={selectedVariant}
+                //   productInventory={productInventory}
+                //   available={available}
+              />
+            ))}
+            <button
+              onClick={() => addToCart(selectedVariant)}
+              className="w-full px-2 py-3 mt-6 text-xl font-bold text-white bg-black hover:bg-gray-800"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

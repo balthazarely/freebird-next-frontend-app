@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
+import NavDropdown from "../snippets/NavDropdown";
 import MiniCart from "./MiniCart";
 
 export default function Navbar() {
@@ -12,20 +13,18 @@ export default function Navbar() {
   });
 
   return (
-    <div className="w-full py-7 px-12 shadow-xl border-b sticky top-0 z-20 bg-white ">
-      <div className=" max-w-full mx-auto flex justify-between">
-        {/* <div className="flex uppercase font-bold text-lg  tracking-wider">
-          <div className="px-6">Women</div>
-          <div className="px-6">Men</div>
-          <div className="px-6">Baby</div>
-        </div> */}
-        <Link href="/">
-          <div className=" font-bold text-2xl  cursor-pointer tracking-wider">
-            FREEBIRD
-          </div>
-        </Link>
+    <div className="sticky top-0 z-20 w-full px-12 bg-white border-b shadow-xl py-7 ">
+      <div className="flex justify-between max-w-full mx-auto ">
+        <div className="flex">
+          <Link href="/">
+            <div className="text-2xl font-bold tracking-wider cursor-pointer ">
+              FREEBIRD
+            </div>
+          </Link>
+          <NavDropdown />
+        </div>
         <a
-          className="text-md font-bold cursor-pointer"
+          className="font-bold cursor-pointer text-md"
           onClick={() => setCartOpen(!cartOpen)}
         >
           Cart ({cartQuantity})

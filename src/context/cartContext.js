@@ -9,6 +9,8 @@ export default function ShopProvider({ children }) {
   const [checkoutId, setCheckoutId] = useState("");
   const [checkoutUrl, setCheckoutUrl] = useState("");
 
+  const [collections, setCollections] = useState([]);
+
   useEffect(() => {
     if (localStorage.checkout_id) {
       const cartObject = JSON.parse(localStorage.checkout_id);
@@ -88,6 +90,7 @@ export default function ShopProvider({ children }) {
         addToCart,
         checkoutUrl,
         removeCartItem,
+        setCollections,
       }}
     >
       {children}
