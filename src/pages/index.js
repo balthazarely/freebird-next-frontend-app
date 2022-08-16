@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export default function Home({ products }) {
   return (
-    <div className="max-w-7xl mx-auto">
-      <h2 className="text-2xl font-extrabold text-gray-900 mb-6">Products</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div className="px-6 mx-auto max-w-7xl">
+      <h2 className="mb-6 text-2xl font-extrabold text-gray-900">Products</h2>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         {products.map((product) => (
           <Link
             key={product.node.id}
@@ -14,10 +14,10 @@ export default function Home({ products }) {
             className="cursor-pointer"
           >
             <div>
-              <div className="text-xl text-center font-bold">
+              <div className="text-xl font-bold text-center">
                 {product.node.title}
               </div>
-              <div className="relative hover:opacity-80 duration-200  aspect-square cursor-pointer">
+              <div className="relative duration-200 cursor-pointer hover:opacity-80 aspect-square">
                 <Image
                   src={product.node.images.edges[0].node.originalSrc}
                   alt={product.node.images.edges[0].node.altText}

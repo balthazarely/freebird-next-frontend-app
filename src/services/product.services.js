@@ -2,7 +2,7 @@ import { ShopifyData } from "../services/shopify.services";
 
 export async function getAllProducts() {
   const query = `{
-    products(first: 250) {
+    products(first: 100) {
       edges {
         node {
           handle
