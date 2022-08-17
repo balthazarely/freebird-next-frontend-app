@@ -1,4 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { useContext } from "react";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon, ShoppingBagIcon } from "@heroicons/react/outline";

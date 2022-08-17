@@ -3,7 +3,6 @@ import PageHero from "../components/snippets/PageHero";
 import ProductCard from "../components/snippets/ProductCard";
 
 export default function Home({ products }) {
-  console.log(products);
   return (
     <>
       <PageHero />
