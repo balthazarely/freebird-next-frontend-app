@@ -5,7 +5,12 @@ export default function PageHero() {
     // <div className="relative w-full h-96 ">
 
     <div className="relative w-full mb-24 h-96">
-      <Image src="/hero-image.webp" layout="fill" objectFit="cover" />
+      <Image
+        src="/hero-image.webp"
+        layout="fill"
+        objectFit="cover"
+        alt="heroimage"
+      />
     </div>
   );
 }

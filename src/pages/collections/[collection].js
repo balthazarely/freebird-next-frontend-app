@@ -11,8 +11,8 @@ export default function CollectionPage({ collection, name }) {
         <h1 className="text-4xl font-bold ">{name.collection}</h1>
 
         <div className="grid grid-cols-1 gap-5 mt-6 md:grid-cols-3">
-          {collection.map((product) => (
-            <ProductCard product={product} />
+          {collection.map((product, idx) => (
+            <ProductCard key={idx} product={product} />
           ))}
         </div>
       </div>

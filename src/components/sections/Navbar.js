@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
-import NavDropdown from "../snippets/NavDropdown";
 import MiniCart from "./MiniCart";
 
 export default function Navbar() {
@@ -21,7 +20,6 @@ export default function Navbar() {
               FREEBIRD
             </div>
           </Link>
-          <NavDropdown />
         </div>
         <a
           className="font-bold cursor-pointer text-md"
