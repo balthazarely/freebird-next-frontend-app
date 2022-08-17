@@ -8,8 +8,8 @@ export default function ProductOptions({
 }) {
   return (
     <fieldset className="mt-3">
-      <legend className="text-xl font-semibold">{name}</legend>
-      <div className="inline-flex flex-wrap items-center">
+      <legend className="text-xl font-semibold ">{name}</legend>
+      <div className="inline-flex flex-wrap items-center gap-4">
         {values.map((value) => {
           const id = `option-${name}-${value}`;
           const checked = selectedOptions[name] === value;
@@ -28,8 +28,8 @@ export default function ProductOptions({
                 }}
               />
               <div
-                className={`p-2 mt-3 text-lg  block cursor-pointer mr-3 border-2 border-gray-800 ${
-                  checked ? "text-white bg-gray-900" : "text-gray-900 bg-white "
+                className={`group  cursor-pointer relative  rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase border-2 border-black   focus:outline-none sm:flex-1  ${
+                  checked ? "bg-black text-white" : " "
                 }`}
               >
                 <span className="px-2">{value}</span>

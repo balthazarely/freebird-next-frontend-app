@@ -8,6 +8,12 @@ export async function getAllProducts() {
           handle
           id
           title
+          tags
+          priceRange {
+            minVariantPrice {
+              amount
+            }
+          }
           images(first: 5) {
             edges {
               node {

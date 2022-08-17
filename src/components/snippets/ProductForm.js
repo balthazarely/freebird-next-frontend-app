@@ -24,25 +24,21 @@ export const ProductForm = ({ product }) => {
     { errorRetryCount: 3 }
   );
 
-  // let variantImages = product.variants.edges.map((variant) => {
-  //   let newColor = variant.node.selectedOptions.filter(
-  //     (item) => item.name === "Color"
-  //   );
-  //   return {
-  //     image: variant.node.image.originalSrc,
-  //     value: newColor[0].value,
-  //   };
-  // });
-
-  // const uniqueImages = Array.from(
-  //   new Set(variantImages.map((a) => a.image))
-  // ).map((id) => {
-  //   return variantImages.find((a) => a.image === id);
-  // });
-
-  // console.log(variantImages, "variantImages");
-  // console.log(uniqueImages, "uniqueImages");
-  console.log(product, "product");
+  ////// Hack to get product images as thumbnails
+  let variantImages = product.variants.edges.map((variant) => {
+    let newColor = variant.node.selectedOptions.filter(
+      (item) => item.name === "Color"
+    );
+    return {
+      image: variant.node.image.originalSrc,
+      value: newColor[0].value,
+    };
+  });
+  const uniqueImages = Array.from(
+    new Set(variantImages.map((a) => a.image))
+  ).map((id) => {
+    return variantImages.find((a) => a.image === id);
+  });
 
   const [available, setAvailable] = useState(true);
   const { addToCart } = useContext(CartContext);
@@ -125,9 +121,6 @@ export const ProductForm = ({ product }) => {
     }
   }, [productInventory, selectedVariant]);
 
-  // console.log(productInventory, "productInventory");
-  // console.log(product, "product");
-
   return (
     <div className="px-12">
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
@@ -147,7 +140,7 @@ export const ProductForm = ({ product }) => {
           <p className="mt-2">{product.description}</p>
 
           <div className="mt-6">
-            <label className="text-xl font-semibold" htmlFor="quantity">
+            <label className="text-xl font-semibold " htmlFor="quantity">
               Quantity
             </label>
             <input
@@ -160,7 +153,7 @@ export const ProductForm = ({ product }) => {
               defaultValue="1"
               min="1"
               max="50"
-              className="w-20 p-2 ml-2 border-2 border-gray-900"
+              className="w-20 p-2 ml-2 ring-2 ring-gray-500"
             />
           </div>
 
@@ -175,6 +168,28 @@ export const ProductForm = ({ product }) => {
                 selectedVariant={selectedVariant}
               />
             ))}
+            <div className="relative flex gap-4 mt-6 ">
+              {uniqueImages.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    value={item.value}
+                    name="option-Color"
+                    className={`relative w-24 border-0 border-black cursor-pointer aspect-square hover:border-2`}
+                    onClick={() => {
+                      setOptions("Color", item.value);
+                    }}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={"imagehere"}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                );
+              })}
+            </div>
             {available ? (
               <button
                 onClick={() => {
@@ -189,34 +204,13 @@ export const ProductForm = ({ product }) => {
                 Sold out!
               </button>
             )}
-            <div className="relative flex w-full gap-4 mt-6 ">
-              {/* {uniqueImages.map((item) => {
-                return (
-                  <div
-                    value={item.value}
-                    name="option-Color"
-                    className="relative w-1/3 aspect-square"
-                    onClick={() => {
-                      setOptions("option-Color", item.value);
-                    }}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={"imagehere"}
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </div>
-                );
-              })} */}
-            </div>
           </div>
         </div>
-        <SelectedDEVTOOL
+        {/* <SelectedDEVTOOL
           selectedVariant={selectedVariant}
           selectedOptions={selectedOptions}
           selecteVariantQuantity={selecteVariantQuantity}
-        />
+        /> */}
       </div>
     </div>
   );

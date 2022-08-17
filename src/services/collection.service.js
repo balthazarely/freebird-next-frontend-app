@@ -32,6 +32,12 @@ export async function getProductsInCollection(handle) {
               title
               id
               handle
+              tags
+              priceRange {
+                minVariantPrice {
+                  amount
+                }
+              }
               images(first: 5) {
                 edges {
                   node {
