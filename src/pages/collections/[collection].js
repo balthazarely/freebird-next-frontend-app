@@ -8,7 +8,9 @@ export default function CollectionPage({ collection, name }) {
   return (
     <div className="mx-auto max-w-7xl">
       <div className="px-12">
-        <h1 className="text-4xl font-bold ">{name.collection}</h1>
+        <h1 className="text-4xl font-bold capitalize ">
+          {name.collection} Collection
+        </h1>
 
         <div className="grid grid-cols-1 gap-5 mt-6 md:grid-cols-3">
           {collection.map((product, idx) => (

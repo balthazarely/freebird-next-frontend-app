@@ -57,6 +57,7 @@ export async function getProductsInCollection(handle) {
               id
               handle
               tags
+              description
               variants(first: 25) {
                 edges {
                   node {
@@ -77,7 +78,7 @@ export async function getProductsInCollection(handle) {
                   }
                 }
               }
-              images(first: 5) {
+              images(first: 8) {
                 edges {
                   node {
                     originalSrc

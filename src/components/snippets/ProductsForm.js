@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { useEffect, useContext, useState } from "react";
 import { CartContext } from "../../context/cartContext";
+import { formatter } from "../../utils/helpers";
+import ProductImage from "./ProductImage";
 import ProductsFormDEVTOOLS from "./ProductsFormDEVTOOLS";
 
 export default function ProductsForm({ products, name }) {
@@ -21,9 +22,10 @@ export default function ProductsForm({ products, name }) {
           handle: variant.node.handle,
           color: color,
           size: item.node.title,
-          image: variant.node.images.edges[0].node.originalSrc,
+          images: variant.node.images.edges,
           variantQuantity: 1,
           variantPrice: item.node.priceV2.amount,
+          description: variant.node.description,
         })
       );
     });
@@ -35,11 +37,11 @@ export default function ProductsForm({ products, name }) {
     });
   }, []);
 
-  function changeOptions(variantTitle, value) {
+  function changeOptions(name, value) {
     setSelectedOptions((prevState) => {
       return {
         ...prevState,
-        [variantTitle]: value,
+        [name]: value,
       };
     });
   }
@@ -54,80 +56,96 @@ export default function ProductsForm({ products, name }) {
   }, [selectedOptions]);
 
   return (
-    <div className="mx-auto max-w-7xl">
-      <div className="grid grid-cols-2 px-12">
-        <div>
-          {products.map((product, idx) => (
-            <div
-              className={`mb-12 ${
-                selectedOptions.variantTitle === product.node.title
-                  ? "block"
-                  : "hidden"
-              }`}
-              key={idx}
-            >
-              <div className="text-sm font-bold">{product.node.title}</div>
-              <div className="flex gap-6 mt-4 ">
-                {product.node.variants.edges.map((variant, idx) => (
+    <div className="px-6 mx-auto max-w-7xl">
+      <div className="flex flex-col w-full gap-8 md:flex-row ">
+        <div className="w-full md:w-2/3">
+          <ProductImage selectedProduct={selectedProduct} />
+        </div>
+        <div className="sticky w-full h-full md:w-1/3 top-8 ">
+          <h1 className="text-5xl font-bold capitalize">
+            {name.products.split("-")[1]}
+          </h1>
+
+          <p className="mt-2 text-lg font-bold text-gray-600">
+            {formatter.format(selectedProduct?.variantPrice)}
+          </p>
+          <p className="mt-8 text-sm">{selectedProduct?.description}</p>
+          <div className="mt-16">
+            <div className="flex flex-col items-start mb-6 ">
+              <div className="mb-2 font-bold tracking-widest text-gray-400 uppercase text-md">
+                Color
+              </div>
+              <div className="flex flex-row gap-4">
+                {products.map((product, idx) => (
                   <button
                     key={idx}
-                    onClick={() => changeOptions("size", variant.node.title)}
-                    className={`flex items-center justify-center w-12 h-12 border-2 border-black rounded-md cursor-pointer hover:bg-black hover:text-white ${
-                      selectedOptions.size === variant.node.title
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
+                    onClick={() =>
+                      changeOptions("variantTitle", product.node.title)
+                    }
+                    className={`p-2 text-md font-bold border-2 duration-200  border-gray-800  hover:bg-gray-800 hover:text-white ${
+                      selectedOptions.variantTitle === product.node.title
+                        ? "bg-gray-800 text-white"
+                        : "bg-white text-gray-600"
                     }  `}
                   >
-                    {variant.node.title}
+                    {product.node.title.split("-")[1]}
                   </button>
                 ))}
               </div>
             </div>
-          ))}
-          <div className="flex flex-col items-start gap-6 ">
-            {products.map((product, idx) => (
-              <button
-                key={idx}
-                onClick={() =>
-                  changeOptions("variantTitle", product.node.title)
-                }
-                className={`p-2 text-lg font-bold border-2 border-black rounded-md hover:bg-black hover:text-white ${
-                  selectedOptions.variantTitle === product.node.title
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                }  `}
-              >
-                {product.node.title}
-              </button>
-            ))}
+            <div>
+              <div>
+                {products.map((product, idx) => (
+                  <div
+                    className={`mb-12 ${
+                      selectedOptions.variantTitle === product.node.title
+                        ? "block"
+                        : "hidden"
+                    }`}
+                    key={idx}
+                  >
+                    <div className="mb-2 font-bold tracking-widest text-gray-400 uppercase text-md">
+                      Size
+                    </div>
+                    <div className="flex flex-wrap gap-4 ">
+                      {product.node.variants.edges.map((variant, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() =>
+                            changeOptions("size", variant.node.title)
+                          }
+                          className={`flex items-center duration-200 justify-center w-12 h-12 border-2 border-gray-800  cursor-pointer hover:bg-gray-800 hover:text-white ${
+                            selectedOptions.size === variant.node.title
+                              ? "bg-gray-800 text-white"
+                              : "bg-white text-gray-800"
+                          }  `}
+                        >
+                          {variant.node.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-        <div>
-          <h1 className="text-4xl font-bold ">{name.products}</h1>
-          <div className="relative w-96 aspect-square">
-            <Image
-              src={products[0].node.images.edges[0].node.originalSrc}
-              alt={"imagehere"}
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-
           <button
-            className="px-2 py-3 mt-6 text-xl font-bold text-white bg-black w-96 hover:bg-gray-800"
+            className="w-full px-2 py-3 mt-6 text-lg font-bold tracking-wider text-white bg-black hover:bg-gray-800"
             onClick={() => {
               addToCart(selectedProduct);
               console.log(selectedProduct);
             }}
           >
-            ADD TO CART
+            ADD TO BAG
           </button>
-          <ProductsFormDEVTOOLS
-            selectedOptions={selectedOptions}
-            selectedProduct={selectedProduct}
-          />
         </div>
       </div>
     </div>
   );
+}
+{
+  /* <ProductsFormDEVTOOLS
+            selectedOptions={selectedOptions}
+            selectedProduct={selectedProduct}
+          /> */
 }

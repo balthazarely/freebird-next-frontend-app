@@ -8,9 +8,7 @@ import { CartContext } from "../../context/cartContext";
 
 const navigation = [
   { name: "Boots", href: "/collections/boots" },
-  { name: "Sandals", href: "/collections/sandal" },
   { name: "Men", href: "/collections/mens" },
-  { name: "Baby", href: "/collections/baby" },
 ];
 
 function classNames(...classes) {
@@ -91,7 +89,7 @@ export default function Nav() {
               </div>
             </div>
           </div>
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="absolute z-50 w-full h-screen bg-white sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <Disclosure.Button

@@ -6,7 +6,7 @@ export default function ProductCard({ product }) {
   return (
     <Link
       key={product.node.id}
-      href={`/product/${product.node.handle}`}
+      href={`/products/freebird-${product.node.tags[0].toLowerCase()}`}
       className="cursor-pointer"
     >
       <div>
