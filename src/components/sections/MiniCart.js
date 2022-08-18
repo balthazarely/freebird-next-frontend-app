@@ -100,7 +100,7 @@ export default function MiniCart({ cart }) {
                                           passHref
                                         >
                                           <a onClick={() => setCartOpen(false)}>
-                                            {product.title}
+                                            {product.variantTitle}
                                           </a>
                                         </Link>
                                       </h3>
@@ -108,8 +108,9 @@ export default function MiniCart({ cart }) {
                                         {formatter.format(product.variantPrice)}
                                       </p>
                                     </div>
+
                                     <p className="mt-1 text-sm text-gray-500">
-                                      {product.variantTitle}
+                                      {product.size}
                                     </p>
                                   </div>
                                   <div className="flex items-end justify-between flex-1 text-sm">
