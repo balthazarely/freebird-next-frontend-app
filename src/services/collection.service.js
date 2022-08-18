@@ -22,7 +22,7 @@ export async function getAllCollections() {
 
 export async function getAllProductCollections() {
   const query = ` {
-    collections(first: 250) {
+    collections(first: 250, query: "title:FREEBIRD-*") {
       edges {
         node {
           title
@@ -33,11 +33,15 @@ export async function getAllProductCollections() {
   }
 `;
   const response = await ShopifyData(query);
-  let filteredReponse = response.collections.edges.filter(
-    (obj) => obj.node.handle.slice(0, 9) === "freebird-"
-  );
+  // let filteredReponse = response.collections.edges.filter(
+  //   (obj) => obj.node.handle.slice(0, 9) === "freebird-"
+  // );
+  // const allCollections = filteredReponse ? filteredReponse : [];
 
-  const allCollections = filteredReponse ? filteredReponse : [];
+  const allCollections = response.collections.edges
+    ? response.collections.edges
+    : [];
+
   return allCollections;
 }
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useContext, useState } from "react";
 import { CartContext } from "../../context/cartContext";
+import ProductsFormDEVTOOLS from "./ProductsFormDEVTOOLS";
 
 export default function ProductsForm({ products, name }) {
   const { addToCart } = useContext(CartContext);
@@ -8,47 +9,47 @@ export default function ProductsForm({ products, name }) {
   const [selectedProduct, setSelectedProduct] = useState({});
   const [selectedOptions, setSelectedOptions] = useState({});
 
+  console.log(products);
   useEffect(() => {
     let combinedProductArray = [];
     products.forEach((variant) => {
       let color = variant.node.title.split(" - ")[1];
       variant.node.variants.edges.forEach((item) =>
         combinedProductArray.push({
-          name: variant.node.title,
+          variantTitle: variant.node.title,
           id: item.node.id,
           handle: variant.node.handle,
           color: color,
           size: item.node.title,
-          image: variant.node.images.edges,
+          image: variant.node.images.edges[0].node.originalSrc,
           variantQuantity: 1,
+          variantPrice: item.node.priceV2.amount,
         })
       );
     });
     setAllProducts(combinedProductArray);
     setSelectedProduct(combinedProductArray[0]);
     setSelectedOptions({
-      name: combinedProductArray[0].name,
+      variantTitle: combinedProductArray[0].variantTitle,
       size: combinedProductArray[0].size,
     });
   }, []);
 
-  function changeOptions(name, value) {
+  function changeOptions(variantTitle, value) {
     setSelectedOptions((prevState) => {
       return {
         ...prevState,
-        [name]: value,
+        [variantTitle]: value,
       };
     });
-    console.log(selectedOptions);
   }
 
   useEffect(() => {
     let findCorrectVariant = allProducts.filter(
       (item) =>
-        item.name === selectedOptions.name && item.size === selectedOptions.size
+        item.variantTitle === selectedOptions.variantTitle &&
+        item.size === selectedOptions.size
     );
-    console.log(findCorrectVariant[0]);
-    console.log(selectedProduct);
     setSelectedProduct(findCorrectVariant[0]);
   }, [selectedOptions]);
 
@@ -59,7 +60,9 @@ export default function ProductsForm({ products, name }) {
           {products.map((product, idx) => (
             <div
               className={`mb-12 ${
-                selectedOptions.name === product.node.title ? "block" : "hidden"
+                selectedOptions.variantTitle === product.node.title
+                  ? "block"
+                  : "hidden"
               }`}
               key={idx}
             >
@@ -85,9 +88,11 @@ export default function ProductsForm({ products, name }) {
             {products.map((product, idx) => (
               <button
                 key={idx}
-                onClick={() => changeOptions("name", product.node.title)}
+                onClick={() =>
+                  changeOptions("variantTitle", product.node.title)
+                }
                 className={`p-2 text-lg font-bold border-2 border-black rounded-md hover:bg-black hover:text-white ${
-                  selectedOptions.name === product.node.title
+                  selectedOptions.variantTitle === product.node.title
                     ? "bg-black text-white"
                     : "bg-white text-black"
                 }  `}
@@ -97,21 +102,6 @@ export default function ProductsForm({ products, name }) {
             ))}
           </div>
         </div>
-        {/* <div className="">
-          {allProducts?.map((product, idx) => (
-            <button
-              className="flex gap-6"
-              key={idx}
-              onClick={() => switchSelectedProduct(product)}
-            >
-              <div className="font-bold ">{product.name}</div>
-              <div>
-                size:{" "}
-                <span className="font-bold text-red-500">{product.size}</span>
-              </div>
-            </button>
-          ))}
-        </div> */}
         <div>
           <h1 className="text-4xl font-bold ">{name.products}</h1>
           <div className="relative w-96 aspect-square">
@@ -122,7 +112,9 @@ export default function ProductsForm({ products, name }) {
               objectFit="cover"
             />
           </div>
+
           <button
+            className="px-2 py-3 mt-6 text-xl font-bold text-white bg-black w-96 hover:bg-gray-800"
             onClick={() => {
               addToCart(selectedProduct);
               console.log(selectedProduct);
@@ -130,41 +122,10 @@ export default function ProductsForm({ products, name }) {
           >
             ADD TO CART
           </button>
-          <div className="w-full px-2 py-6 mt-6 mb-6 bg-purple-200">
-            {selectedOptions !== {} ? (
-              <div>
-                <div>{selectedOptions.name}</div>
-                <div>{selectedOptions.size}</div>
-              </div>
-            ) : (
-              "loading "
-            )}
-          </div>
-          <div className="">
-            {selectedProduct ? (
-              <div className="w-full px-2 py-6 mt-6 mb-6 bg-slate-200">
-                <div>
-                  selected name:{" "}
-                  <span className="font-bold">{selectedProduct.name}</span>
-                </div>
-                <div>
-                  selected size:{" "}
-                  <span className="font-bold">{selectedProduct.size}</span>
-                </div>
-                <div>
-                  selected color:{" "}
-                  <span className="font-bold">{selectedProduct.color}</span>
-                </div>
-                <div>
-                  selected id:{" "}
-                  <span className="font-bold">{selectedProduct.id}</span>
-                </div>
-                <div>{/* selectedOptions: <span></span> */}</div>
-              </div>
-            ) : (
-              "loading products"
-            )}
-          </div>
+          <ProductsFormDEVTOOLS
+            selectedOptions={selectedOptions}
+            selectedProduct={selectedProduct}
+          />
         </div>
       </div>
     </div>
