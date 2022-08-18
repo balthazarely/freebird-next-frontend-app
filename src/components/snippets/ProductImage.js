@@ -8,9 +8,11 @@ export default function ProductImage({ selectedProduct }) {
         {selectedProduct &&
           selectedProduct.images &&
           selectedProduct.images.map((item, idx) => (
-            <div className="relative w-full aspect-square bg-slate-100">
+            <div
+              className="relative w-full aspect-square bg-slate-100"
+              key={idx}
+            >
               <Image
-                key={idx}
                 src={item.node.originalSrc}
                 alt="imagehere"
                 layout="fill"
@@ -23,7 +25,10 @@ export default function ProductImage({ selectedProduct }) {
         {selectedProduct &&
           selectedProduct.images &&
           selectedProduct.images.slice(0, 1).map((item, idx) => (
-            <div className="relative w-full aspect-square bg-slate-100">
+            <div
+              className="relative w-full aspect-square bg-slate-100"
+              key={idx}
+            >
               <Image
                 key={idx}
                 src={item.node.originalSrc}
