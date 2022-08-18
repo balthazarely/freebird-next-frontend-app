@@ -1,8 +1,7 @@
 import { ShopifyData } from "./shopify.services";
 
 export async function getAllCollections() {
-  const query = `
-{
+  const query = ` {
     collections(first: 250) {
       edges {
         node {
@@ -21,6 +20,27 @@ export async function getAllCollections() {
   return allCollections;
 }
 
+export async function getAllProductCollections() {
+  const query = ` {
+    collections(first: 250) {
+      edges {
+        node {
+          title
+          handle
+        }
+      }
+    } 
+  }
+`;
+  const response = await ShopifyData(query);
+  let filteredReponse = response.collections.edges.filter(
+    (obj) => obj.node.handle.slice(0, 9) === "freebird-"
+  );
+
+  const allCollections = filteredReponse ? filteredReponse : [];
+  return allCollections;
+}
+
 export async function getProductsInCollection(handle) {
   const query = `
   {
@@ -33,9 +53,24 @@ export async function getProductsInCollection(handle) {
               id
               handle
               tags
-              priceRange {
-                minVariantPrice {
-                  amount
+              variants(first: 25) {
+                edges {
+                  node {
+                    selectedOptions {
+                      name
+                      value
+                    }
+                    image {
+                      originalSrc
+                      altText
+                    }
+                    title
+                    id
+                    availableForSale
+                    priceV2 {
+                      amount
+                    }
+                  }
                 }
               }
               images(first: 5) {

@@ -2,7 +2,7 @@ import { ProductForm } from "../../components/snippets/ProductForm";
 import { getAllProducts, getProduct } from "../../services/product.services";
 
 export default function ProductPage({ product }) {
-  // console.log(product);
+  console.log(product);
   return (
     <div className="mx-auto max-w-7xl">
       <ProductForm product={product} />

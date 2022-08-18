@@ -6,6 +6,7 @@ export default function ProductOptions({
   selectedOptions,
   setOptions,
 }) {
+  console.log(values, name);
   return (
     <fieldset className="mt-3">
       <legend className="text-xl font-semibold ">{name}</legend>

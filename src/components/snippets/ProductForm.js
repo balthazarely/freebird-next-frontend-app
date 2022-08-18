@@ -25,20 +25,22 @@ export const ProductForm = ({ product }) => {
   );
 
   ////// Hack to get product images as thumbnails
-  let variantImages = product.variants.edges.map((variant) => {
-    let newColor = variant.node.selectedOptions.filter(
-      (item) => item.name === "Color"
-    );
-    return {
-      image: variant.node.image.originalSrc,
-      value: newColor[0].value,
-    };
-  });
-  const uniqueImages = Array.from(
-    new Set(variantImages.map((a) => a.image))
-  ).map((id) => {
-    return variantImages.find((a) => a.image === id);
-  });
+  // let variantImages = product.variants.edges.map((variant) => {
+  //   let newColor = variant.node.selectedOptions.filter(
+  //     (item) => item.name === "Color"
+  //   );
+  //   return {
+  //     image: variant.node.image.originalSrc,
+  //     value: newColor[0].value,
+  //   };
+  // });
+  // const uniqueImages = Array.from(
+  //   new Set(variantImages.map((a) => a.image))
+  // ).map((id) => {
+  //   return variantImages.find((a) => a.image === id);
+  // });
+
+  console.log(product.options, "product.options");
 
   const [available, setAvailable] = useState(true);
   const { addToCart } = useContext(CartContext);
@@ -65,6 +67,9 @@ export const ProductForm = ({ product }) => {
   product.options.map((item) => {
     defaultValues[item.name] = item.values[0];
   });
+
+  console.log(product, "this is it product");
+  console.log(allVariantOptions, "this is it allVariantOptions");
 
   const [selectedVariant, setSelectedVariant] = useState(allVariantOptions[0]);
   const [selectedOptions, setSelectedOptions] = useState(defaultValues);
@@ -168,7 +173,7 @@ export const ProductForm = ({ product }) => {
                 selectedVariant={selectedVariant}
               />
             ))}
-            <div className="relative flex gap-4 mt-6 ">
+            {/* <div className="relative flex gap-4 mt-6 ">
               {uniqueImages.map((item, index) => {
                 return (
                   <div
@@ -189,11 +194,12 @@ export const ProductForm = ({ product }) => {
                   </div>
                 );
               })}
-            </div>
+            </div> */}
             {available ? (
               <button
                 onClick={() => {
                   addToCart(selectedVariant);
+                  console.log(selectedVariant);
                 }}
                 className="w-full px-2 py-3 mt-6 text-xl font-bold text-white bg-black hover:bg-gray-800"
               >

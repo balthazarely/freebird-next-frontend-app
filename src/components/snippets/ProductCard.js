@@ -6,7 +6,7 @@ export default function ProductCard({ product }) {
   return (
     <Link
       key={product.node.id}
-      href={`/products/${product.node.handle}`}
+      href={`/product/${product.node.handle}`}
       className="cursor-pointer"
     >
       <div>
@@ -23,7 +23,7 @@ export default function ProductCard({ product }) {
             {product.node.title}
           </div>
           <div>
-            {formatter.format(product.node.priceRange.minVariantPrice.amount)}
+            {/* {formatter.format(product.node.priceRange.minVariantPrice.amount)} */}
           </div>
         </div>
         <div className="text-left text-gray-900 capitalize text-md">
