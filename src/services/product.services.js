@@ -32,6 +32,38 @@ export async function getAllProducts() {
   return slugs;
 }
 
+export async function getAllProductsWithTag(color, gender, heel) {
+  const query = `{
+    products(first: 100, query: "${color} AND ${gender} AND ${heel}") {
+      edges {
+        node {
+          handle
+          id
+          title
+          tags
+          priceRange {
+            minVariantPrice {
+              amount
+            }
+          }
+          images(first: 5) {
+            edges {
+              node {
+                originalSrc
+                altText
+              }
+            }
+          }
+        }
+      }
+    }
+  }`;
+
+  const response = await ShopifyData(query);
+  const slugs = response.products.edges ? response.products.edges : [];
+  return slugs;
+}
+
 export async function getProduct(handle) {
   const query = `
   {

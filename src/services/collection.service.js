@@ -16,7 +16,6 @@ export async function getAllCollections() {
   const allCollections = response.collections.edges
     ? response.collections.edges
     : [];
-  //   console.log(allCollections, "allCollections from the services");
   return allCollections;
 }
 
@@ -33,11 +32,6 @@ export async function getAllProductCollections() {
   }
 `;
   const response = await ShopifyData(query);
-  // let filteredReponse = response.collections.edges.filter(
-  //   (obj) => obj.node.handle.slice(0, 9) === "freebird-"
-  // );
-  // const allCollections = filteredReponse ? filteredReponse : [];
-
   const allCollections = response.collections.edges
     ? response.collections.edges
     : [];
