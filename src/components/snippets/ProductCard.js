@@ -3,10 +3,13 @@ import Image from "next/image";
 import { formatter } from "../../utils/helpers";
 
 export default function ProductCard({ product }) {
+  let title = product.node.title.split(" - ")[0];
+  let titleCased = title[0].toLowerCase() + title.substring(1);
+
   return (
     <Link
       key={product.node.id}
-      href={`/products/freebird-${product.node.tags[0].toLowerCase()}`}
+      href={`/products/freebird-${titleCased}`}
       className="cursor-pointer"
     >
       <div>
