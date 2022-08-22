@@ -1,5 +1,47 @@
 import { ShopifyData } from "../services/shopify.services";
 
+export async function paginateAllProducts(cursor) {
+  const query = `{
+    products(first: 1 ${
+      cursor ? "after:" + '"' + cursor + '"' : ""
+    } query: "color=leopard") {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          handle
+          id
+          title
+          tags
+          priceRange {
+            minVariantPrice {
+              amount
+            }
+          }
+          images(first: 5) {
+            edges {
+              node {
+                originalSrc
+                altText
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  `;
+
+  const response = await ShopifyData(query);
+  console.log(response);
+  const slugs = response ? response : [];
+  return slugs;
+}
+
 export async function getAllProducts() {
   const query = `{
     products(first: 100) {
@@ -32,10 +74,25 @@ export async function getAllProducts() {
   return slugs;
 }
 
-export async function getAllProductsWithTag(color, gender, heel) {
+export async function getAllProductsWithTag(
+  paginateBy,
+  cursor,
+  color,
+  gender,
+  heel,
+  priceGreaterThan,
+  priceLessThan
+) {
   const query = `{
-    products(first: 100, query: "${color} AND ${gender} AND ${heel}") {
+    products(first: ${paginateBy}, ${
+    cursor ? "after:" + '"' + cursor + '"' : ""
+  } query: "${color} AND ${gender} AND ${heel} AND variants.price:>${priceGreaterThan} AND variants.price:<${priceLessThan}") {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
       edges {
+        cursor
         node {
           handle
           id
@@ -44,6 +101,14 @@ export async function getAllProductsWithTag(color, gender, heel) {
           priceRange {
             minVariantPrice {
               amount
+            }
+          }
+          variants(first: 12){
+            edges {
+              node {
+                title
+                availableForSale
+              }
             }
           }
           images(first: 5) {
@@ -60,7 +125,7 @@ export async function getAllProductsWithTag(color, gender, heel) {
   }`;
 
   const response = await ShopifyData(query);
-  const slugs = response.products.edges ? response.products.edges : [];
+  const slugs = response ? response : [];
   return slugs;
 }
 
@@ -114,3 +179,60 @@ export async function getProduct(handle) {
 
   return product;
 }
+
+/// THIS COULD BE USEFUl
+// {
+//   products(first: 50, query: "variants.price:>200") {
+//     edges {
+//       node {
+//         title
+//         tags
+//         variantBySelectedOptions(selectedOptions: [{name: "Size", value: "11 "}]) {
+//           id
+//           title
+//           priceV2 {
+//             amount
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+// {
+//   products(first: 50, query:"variants.price:>200") {
+//     edges {
+//       node {
+//         title
+//         tags
+
+//         variantBySelectedOptions(selectedOptions: [{name: "Size", value: "11"}]) {
+//           id
+//           title
+//           priceV2 {
+//             amount
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+// {
+//   products(first: 50, query: "variants.price:>350 AND variants.price:<600") {
+//     edges {
+//       node {
+//         title
+//         tags
+
+//         variantBySelectedOptions(selectedOptions: [{name: "Size", value: "6 "}]) {
+//           id
+//           title
+//           priceV2 {
+//             amount
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

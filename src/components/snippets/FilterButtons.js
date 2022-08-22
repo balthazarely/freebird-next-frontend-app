@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function FilterButtons({
   setGender,
   gender,
@@ -5,6 +7,10 @@ export default function FilterButtons({
   setColor,
   heel,
   setHeel,
+  setPriceGreaterThan,
+  setPiceLessThan,
+  priceGreaterThan,
+  priceLessThan,
 }) {
   return (
     <div>
@@ -50,14 +56,14 @@ export default function FilterButtons({
           All
         </button>
         <button
-          onClick={() => setColor("color=brown")}
+          onClick={() => setColor("color=cognac")}
           className={`px-2 py-1 border-2 border-black rounded-md order-black ${
-            color === "color=brown"
+            color === "color=cognac"
               ? "bg-black text-white"
               : "bg-white text-black"
           }`}
         >
-          Brown
+          Cognac
         </button>
         <button
           onClick={() => setColor("color=black")}
@@ -131,13 +137,37 @@ export default function FilterButtons({
           Large
         </button>
       </div>
-      <div>
+
+      <div>Price:</div>
+      <div className="flex flex-wrap gap-2 p-2 mb-6 ">
+        <div className="flex items-center justify-start gap-2">
+          <div className="text-sm">Greater Than</div>
+          <input
+            type="text"
+            className="w-16 border-2 border-black"
+            value={priceGreaterThan}
+            onChange={(e) => setPriceGreaterThan(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center justify-start gap-2">
+          <div className="text-sm">Less Than</div>
+          <input
+            type="text"
+            className="w-16 border-2 border-black"
+            value={priceLessThan}
+            onChange={(e) => setPiceLessThan(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
         <button
-          className="px-2 py-1 mt-12 text-white bg-red-800 rounded-md"
+          className="px-2 py-1 text-white bg-red-800 rounded-md"
           onClick={() => {
             setColor("");
             setGender("");
             setHeel("");
+            setPiceLessThan(1000);
+            setPriceGreaterThan(0);
           }}
         >
           Clear All
