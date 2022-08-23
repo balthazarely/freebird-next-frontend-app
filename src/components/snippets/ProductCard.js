@@ -42,6 +42,7 @@ export default function ProductCard({ product }) {
             {product.node.variants.edges.map((variant, idx) => {
               return (
                 <div
+                  key={idx}
                   style={{ border: "1px solid black" }}
                   className={` flex items-center justify-center font-bold w-10 h-10 text-sm ${
                     variant.node.availableForSale
