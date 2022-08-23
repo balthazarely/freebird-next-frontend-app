@@ -98,11 +98,6 @@ export async function getAllProductsWithTag(
           id
           title
           tags
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
           variants(first: 12){
             edges {
               node {
