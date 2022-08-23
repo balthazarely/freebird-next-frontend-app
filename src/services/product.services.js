@@ -16,11 +16,6 @@ export async function paginateAllProducts(cursor) {
           id
           title
           tags
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
           images(first: 5) {
             edges {
               node {

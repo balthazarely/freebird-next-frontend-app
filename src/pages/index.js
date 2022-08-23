@@ -1,13 +1,7 @@
-import {
-  getAllProductsWithTag,
-  getAllProducts,
-  paginateAllProducts,
-} from "../services/product.services";
-import PageHero from "../components/snippets/PageHero";
+import { getAllProductsWithTag } from "../services/product.services";
 import ProductCard from "../components/snippets/ProductCard";
 import { useEffect, useState } from "react";
 import FilterButtons from "../components/snippets/FilterButtons";
-import { testQuery } from "../services/test.querys";
 
 export default function Home({ products }) {
   const [filteredProducts, setFilteredProducts] = useState();

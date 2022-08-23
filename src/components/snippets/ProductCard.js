@@ -34,7 +34,7 @@ export default function ProductCard({ product }) {
             {productSubTitle}
           </div>
           <div>
-            {formatter.format(product.node.priceRange.minVariantPrice.amount)}
+            {/* {formatter.format(product.node.priceRange.minVariantPrice.amount)} */}
           </div>
         </div>
         <div className="mt-4 duration-300 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
