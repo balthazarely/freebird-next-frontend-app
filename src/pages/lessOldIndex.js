@@ -66,7 +66,6 @@ export default function Home({ products }) {
 
   return (
     <>
-      {testDataCursor}
       <div className="px-6 mx-auto max-w-7xl">
         <div className="flex flex-row gap-6">
           <div className="w-2/12">
