@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import MiniCart from "./MiniCart";
 import { CartContext } from "../../context/cartContext";
+import Image from "next/image";
 
 const navigation = [
   { name: "Boots", href: "/collections/boots" },
@@ -49,11 +50,30 @@ export default function Nav() {
                 <div className="flex items-center flex-shrink-0">
                   <Link href="/">
                     <div className="text-2xl font-bold tracking-wider cursor-pointer ">
-                      FREEBIRD
+                      <div
+                        style={{
+                          width: "250px",
+                          height: "100px",
+                          position: "relative",
+                        }}
+                      >
+                        <Image
+                          alt="Mountains"
+                          src="/Freebird-logo.webp"
+                          layout="fill"
+                          objectFit="contain"
+                        />
+                      </div>
+                      {/* <Image
+                        src="/Freebird-logo.webp"
+                        width={100}
+                        height={auto}
+                        alt="heroimage"
+                      /> */}
                     </div>
                   </Link>
                 </div>
-                <div className="hidden sm:block sm:ml-6">
+                <div className="items-center hidden sm:flex sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -89,7 +109,7 @@ export default function Nav() {
               </div>
             </div>
           </div>
-          <Disclosure.Panel className="absolute z-50 w-full h-screen bg-white sm:hidden">
+          <Disclosure.Panel className="absolute z-50 w-full h-screen bg-white sm:hidden{">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <Disclosure.Button

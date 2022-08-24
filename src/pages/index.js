@@ -2,123 +2,206 @@ import { getAllProductsWithTag } from "../services/product.services";
 import ProductCard from "../components/snippets/ProductCard";
 import { useEffect, useState } from "react";
 import FilterButtons from "../components/snippets/FilterButtons";
+import { getAllProductsTest } from "../services/test.querys";
+import { Oval } from "react-loader-spinner";
+import ProductFilter from "../components/snippets/ProductFilter";
+import SelectedProductFilter from "../components/snippets/SelectedProductFilter";
 
-export default function Home({ products }) {
+export default function Home() {
+  const [testProducts, setTestProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState();
-  const [loadingProducts, setLoadingProducts] = useState(false);
-  const [color, setColor] = useState("");
-  const [gender, setGender] = useState("");
-  const [heel, setHeel] = useState("");
-  const [priceGreaterThan, setPriceGreaterThan] = useState(0);
-  const [priceLessThan, setPiceLessThan] = useState(1000);
-  const [cursor, setCursor] = useState("");
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [paginateBy, setPaginateBy] = useState(3);
+  const [testDataHasNextPage, setTestDataHasNextPage] = useState(true);
+  const [testDataCursor, setTestDataCursor] = useState("");
 
-  const fetchData = async (cursor) => {
-    setLoadingProducts(true);
-    const loadMoreProducts = await getAllProductsWithTag(
-      paginateBy,
-      cursor,
-      color,
-      gender,
-      heel,
-      priceGreaterThan,
-      priceLessThan
-    );
-    setFilteredProducts(loadMoreProducts.products.edges);
-    setHasNextPage(loadMoreProducts.products.pageInfo.hasNextPage);
-    setCursor(
-      loadMoreProducts.products.edges[1]
-        ? loadMoreProducts.products.edges[1].cursor
-        : ""
-    );
-    setLoadingProducts(false);
-  };
+  const [tags, setTags] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [filerByTag, setFilerByTag] = useState([]);
+  const [filterBySize, setFilterBySize] = useState([]);
+  const [filterType, setFilterType] = useState("every");
 
-  const fetchMore = async (cursorFromFn) => {
-    setLoadingProducts(true);
-    const loadMoreProducts = await getAllProductsWithTag(
-      paginateBy,
-      cursorFromFn,
-      color,
-      gender,
-      heel,
-      priceGreaterThan,
-      priceLessThan
-    );
-    loadMoreProducts.products.edges.forEach((obj) => {
+  const fetchTestProducts = async (cursor) => {
+    const testdata = await getAllProductsTest(cursor);
+    testdata.products.edges.forEach((obj) => {
+      setTestProducts((prevArray) => [...prevArray, obj]);
       setFilteredProducts((prevArray) => [...prevArray, obj]);
     });
-    setHasNextPage(loadMoreProducts.products.pageInfo.hasNextPage);
-    setCursor(
-      loadMoreProducts.products.edges[1]
-        ? loadMoreProducts.products.edges[1].cursor
-        : ""
+
+    //======= Get Product Tags  =======//
+    const filterTags = testdata.products.edges.map((item) => {
+      return item.node.tags.filter((tag) => tag.split(":")[0] === "FILTER");
+    });
+    setTags([...new Set(tags.concat([...new Set(filterTags.flat())]))]);
+
+    //======= Get Product Tags  =======//
+    const productSizes = testdata.products.edges
+      .map((prod) => prod.node.variants.edges.map((edge) => edge.node.title))
+      .flat()
+      .sort((a, b) => a - b);
+    setSizes([...new Set(sizes.concat([...new Set(productSizes)]))]);
+
+    //======= Pagination  =======//
+    setTestDataHasNextPage(testdata.products.pageInfo.hasNextPage);
+    setTestDataCursor(
+      testdata.products.edges[2] ? testdata.products.edges[2].cursor : ""
     );
-    setLoadingProducts(false);
   };
 
   useEffect(() => {
-    fetchData();
-  }, [gender, color, heel, priceGreaterThan, priceLessThan]);
+    if (testDataHasNextPage) {
+      fetchTestProducts(testDataCursor);
+    }
+    console.log(testProducts);
+  }, [testProducts]);
+
+  //======= Filter Section  =======//
+  const setTagFilter = (filter) => {
+    if (filerByTag.includes(filter)) {
+      setFilerByTag(filerByTag.filter((item) => item !== filter));
+    } else {
+      setFilerByTag((current) => [...current, filter]);
+    }
+  };
+
+  const setSizeFilter = (size) => {
+    if (filterBySize.includes(size)) {
+      setFilterBySize(filterBySize.filter((item) => item !== size));
+    } else {
+      setFilterBySize((current) => [...current, size]);
+    }
+  };
+
+  const clearFilters = () => {
+    setFilterBySize([]);
+    setFilerByTag([]);
+  };
+
+  useEffect(() => {
+    const filterByTag = testProducts.filter((data) => {
+      if (filerByTag.length === 0) {
+        return data;
+      }
+      if (filerByTag.length !== 0) {
+        if (filterType === "some") {
+          return filerByTag.some(function (category) {
+            if (data.node.tags) {
+              return data.node.tags.includes(category);
+            }
+          });
+        }
+        if (filterType === "every") {
+          return filerByTag.every(function (category) {
+            if (data.node.tags) {
+              return data.node.tags.includes(category);
+            }
+          });
+        }
+      }
+    });
+    // setFilteredProducts(filterByTag);
+    const filterBySizssse = filterByTag.filter((data) => {
+      if (filterBySize.length === 0) {
+        return data;
+      }
+      if (filterBySize.length !== 0) {
+        return filterBySize.some(function (category) {
+          return data.node.variants.edges.some((item) =>
+            item.node.title.includes(category)
+          );
+        });
+      }
+    });
+
+    let sortedProducts = filterBySizssse.sort((a, b) =>
+      a.node.title.localeCompare(b.node.title)
+    );
+    setFilteredProducts(sortedProducts);
+  }, [filerByTag, filterBySize]);
+
+  useEffect(() => {
+    // const filterBySizssse = testProducts.filter((data) => {
+    //   if (filterBySize.length === 0) {
+    //     return data;
+    //   }
+    //   if (filterBySize.length !== 0) {
+    //     return filterBySize.some(function (category) {
+    //       return data.node.variants.edges.some((item) =>
+    //         item.node.title.includes(category)
+    //       );
+    //     });
+    //   }
+    // });
+    // console.log(filterBySizssse);
+    // setFilteredProducts(filterBySizssse);
+  }, [filterBySize]);
 
   return (
     <>
       <div className="px-6 mx-auto max-w-7xl">
         <div className="flex flex-row gap-6">
-          <div className="w-2/12">
-            <FilterButtons
-              color={color}
-              setColor={setColor}
-              gender={gender}
-              setGender={setGender}
-              heel={heel}
-              setHeel={setHeel}
-              setPriceGreaterThan={setPriceGreaterThan}
-              setPiceLessThan={setPiceLessThan}
-              priceGreaterThan={priceGreaterThan}
-              priceLessThan={priceLessThan}
-            />
+          <div className="sticky w-2/12 h-full top-8 ">
+            {testDataHasNextPage ? (
+              <div className="flex items-center justify-center w-full h-80">
+                <Oval
+                  height={60}
+                  width={60}
+                  color="white"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor="black "
+                  strokeWidth={2}
+                  strokeWidthSecondary={2}
+                />
+              </div>
+            ) : (
+              <>
+                <ProductFilter
+                  setTagFilter={setTagFilter}
+                  filerByTag={filerByTag}
+                  tags={tags}
+                  setSizeFilter={setSizeFilter}
+                  filterBySize={filterBySize}
+                  sizes={sizes}
+                />
+                <SelectedProductFilter
+                  filerByTag={filerByTag}
+                  filterBySize={filterBySize}
+                  setTagFilter={setTagFilter}
+                  setSizeFilter={setSizeFilter}
+                  clearFilters={clearFilters}
+                />
+              </>
+            )}
           </div>
 
           <div className="w-10/12">
-            {/* <div className="w-full px-2 py-6 mb-6 bg-slate-100">
-              <div className="text-2xl font-bold ">
-                {filteredProducts?.length} Results{" "}
-              </div>
-              <div className="mt-4">
-                <code>color: {color}</code>
-                <br />
-                <code>gender: {gender}</code>
-                <br />
-                <code>heel: {heel}</code>
-                <br />
-                <code>cursor: {cursor}</code>
-                <br />
-                <code>hasNextPage: {hasNextPage ? "true" : "false"}</code>
-              </div>
-            </div> */}
-            <div className={`grid w-full grid-cols-3 gap-12 duration-200}`}>
-              {filteredProducts &&
-                filteredProducts.map((product, idx) => (
-                  <>
-                    <ProductCard key={idx} product={product} />
-                  </>
-                ))}
+            <div
+              className={`grid w-full xl:grid-cols-3 grid-cols-2 gap-12 duration-200}`}
+            >
+              {!testDataHasNextPage &&
+                filteredProducts &&
+                filteredProducts.map((product, idx) => {
+                  return <ProductCard key={idx} product={product} />;
+                  // }
+                })}
             </div>
-            <div className="flex justify-center">
-              <button
-                className={`px-5 py-2 mt-8  rounded-lg ${
-                  !hasNextPage
-                    ? "bg-gray-500 text-white"
-                    : "bg-gray-900 text-white"
-                } `}
-                onClick={() => fetchMore(cursor)}
-              >
-                {hasNextPage ? "Load More" : "End of Products"}
-              </button>
-            </div>
+            {testDataHasNextPage && (
+              <div className="flex items-center justify-center w-full h-80">
+                <Oval
+                  height={60}
+                  width={60}
+                  color="white"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor="black "
+                  strokeWidth={2}
+                  strokeWidthSecondary={2}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

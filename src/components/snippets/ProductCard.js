@@ -6,7 +6,7 @@ export default function ProductCard({ product }) {
   let title = product.node.title.split(" - ")[0];
   let titleCased = title[0].toLowerCase() + title.substring(1);
 
-  console.log(product);
+  // console.log(product);
 
   const productTitle = product.node.title.split(" - ")[0];
   const productSubTitle = product.node.title.split(" - ")[1];
