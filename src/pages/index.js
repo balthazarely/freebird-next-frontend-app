@@ -30,14 +30,19 @@ export default function Home() {
     const filterTags = testdata.products.edges.map((item) => {
       return item.node.tags.filter((tag) => tag.split(":")[0] === "FILTER");
     });
+
     setTags([...new Set(tags.concat([...new Set(filterTags.flat())]))]);
 
     //======= Get Product Tags  =======//
     const productSizes = testdata.products.edges
       .map((prod) => prod.node.variants.edges.map((edge) => edge.node.title))
-      .flat()
-      .sort((a, b) => a - b);
-    setSizes([...new Set(sizes.concat([...new Set(productSizes)]))]);
+      .flat();
+    setSizes([
+      ...new Set(
+        sizes.concat([...new Set(productSizes)]).sort((a, b) => a - b)
+      ),
+    ]);
+    console.log(sizes);
 
     //======= Pagination  =======//
     setTestDataHasNextPage(testdata.products.pageInfo.hasNextPage);

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { formatter } from "../../utils/helpers";
 
 export default function ProductCard({ product }) {
   let title = product.node.title.split(" - ")[0];
@@ -37,8 +36,9 @@ export default function ProductCard({ product }) {
             {/* {formatter.format(product.node.priceRange.minVariantPrice.amount)} */}
           </div>
         </div>
-        <div className="mt-4 duration-300 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-          <div className="flex flex-wrap justify-center gap-2 text-left text-gray-900 capitalize text-md">
+        <div className="mt-2 duration-300 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="text-sm text-gray-500">Available Sizes</div>
+          <div className="flex flex-wrap justify-start gap-2 text-left text-gray-900 capitalize text-md">
             {product.node.variants.edges.map((variant, idx) => {
               return (
                 <div

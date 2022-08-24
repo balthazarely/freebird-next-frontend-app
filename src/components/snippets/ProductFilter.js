@@ -19,10 +19,10 @@ export default function ProductFilter({
                 <div
                   onClick={() => setTagFilter(item)}
                   key={idx}
-                  className={` capitalize border-2 border-black cursor-pointer hover:text-white hover:bg-gray-800  rounded-md px-2 py-1 ${
+                  className={` capitalize border-2 border-gray-700 cursor-pointer hover:text-white hover:bg-gray-700  rounded-md px-2 py-1 ${
                     filerByTag.includes(item)
-                      ? "bg-gray-800 text-white"
-                      : "bg-white text-black"
+                      ? "bg-gray-700 text-white"
+                      : "bg-white text-gray-700"
                   }`}
                 >
                   {item.split("=")[1]}
@@ -40,10 +40,10 @@ export default function ProductFilter({
                 <div
                   onClick={() => setTagFilter(item)}
                   key={idx}
-                  className={` capitalize border-2 border-black cursor-pointer hover:text-white hover:bg-gray-800  rounded-md px-2 py-1 ${
+                  className={` capitalize border-2 border-gray-700 cursor-pointer hover:text-white hover:bg-gray-700  rounded-md px-2 py-1 ${
                     filerByTag.includes(item)
                       ? "bg-gray-800 text-white"
-                      : "bg-white text-black"
+                      : "bg-white text-gray-800"
                   }`}
                 >
                   {item.split("=")[1]}
@@ -61,10 +61,10 @@ export default function ProductFilter({
                 <div
                   onClick={() => setTagFilter(item)}
                   key={idx}
-                  className={` capitalize border-2 border-black cursor-pointer hover:text-white hover:bg-gray-800  rounded-md px-2 py-1 ${
+                  className={` capitalize border-2 border-gray-700 cursor-pointer hover:text-white hover:bg-gray-800  rounded-md px-2 py-1 ${
                     filerByTag.includes(item)
-                      ? "bg-gray-800 text-white"
-                      : "bg-white text-black"
+                      ? "bg-gray-700 text-white"
+                      : "bg-white text-gray-700"
                   }`}
                 >
                   {item.split("=")[1]}
@@ -80,9 +80,9 @@ export default function ProductFilter({
             <div
               key={idx}
               onClick={() => setSizeFilter(size)}
-              className={` capitalize border-2 border-black cursor-pointer hover:text-white hover:bg-gray-800 w-10 flex justify-center rounded-md px-2 py-1 ${
+              className={` capitalize border-2 border-gray-700 cursor-pointer hover:text-white hover:bg-gray-700 w-10 flex justify-center rounded-md px-2 py-1 ${
                 filterBySize.includes(size)
-                  ? "bg-gray-800 text-white"
+                  ? "bg-gray-700 text-white"
                   : "bg-white text-black"
               }`}
             >
