@@ -15,8 +15,11 @@ export default function SelectedProductFilter({
         ""
       )}
 
-      {filerByTag.map((filter) => (
-        <div className="flex items-center justify-between px-2 py-1 mb-2 capitalize bg-gray-200">
+      {filerByTag.map((filter, idx) => (
+        <div
+          key={idx}
+          className="flex items-center justify-between px-2 py-1 mb-2 capitalize bg-gray-200"
+        >
           <div>{filter.split(":")[1].split("=").join(" : ")} </div>
           <div
             onClick={() => setTagFilter(filter)}
@@ -26,8 +29,11 @@ export default function SelectedProductFilter({
           </div>
         </div>
       ))}
-      {filterBySize.map((filter) => (
-        <div className="flex items-center justify-between px-2 py-1 mb-2 capitalize bg-gray-200">
+      {filterBySize.map((filter, idx) => (
+        <div
+          key={idx}
+          className="flex items-center justify-between px-2 py-1 mb-2 capitalize bg-gray-200"
+        >
           <div>Size : {filter} </div>
           <div
             onClick={() => setSizeFilter(filter)}
