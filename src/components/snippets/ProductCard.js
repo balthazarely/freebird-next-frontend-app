@@ -2,17 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function ProductCard({ product }) {
-  let title = product.node.title.split(" - ")[0];
-  let titleCased = title[0].toLowerCase() + title.substring(1);
-
-  // console.log(product);
-
+  const title = product.node.title.split(" - ")[0];
+  const titleCased = title[0].toLowerCase() + title.substring(1);
   const productTitle = product.node.title.split(" - ")[0];
   const productSubTitle = product.node.title.split(" - ")[1];
   return (
     <Link
       key={product.node.id}
-      href={`/products/freebird-${titleCased}`}
+      href={`/products/freebird-${titleCased}?variant=${product.node.handle}`}
       className="cursor-pointer "
     >
       <div className="relative group ">

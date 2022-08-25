@@ -42,7 +42,6 @@ export default function Home() {
         sizes.concat([...new Set(productSizes)]).sort((a, b) => a - b)
       ),
     ]);
-    console.log(sizes);
 
     //======= Pagination  =======//
     setTestDataHasNextPage(testdata.products.pageInfo.hasNextPage);
@@ -55,7 +54,6 @@ export default function Home() {
     if (testDataHasNextPage) {
       fetchTestProducts(testDataCursor);
     }
-    console.log(testProducts);
   }, [testProducts]);
 
   //======= Filter Section  =======//

@@ -1,19 +1,22 @@
 import Image from "next/image";
 
-export default function ProductImage({ selectedProduct }) {
-  console.log(selectedProduct);
+export default function ProductImage({
+  selectedProduct,
+  openModalAndScrollToImage,
+}) {
   return (
     <div className="">
       <div className="hidden grid-cols-2 gap-6 md:grid">
         {selectedProduct &&
           selectedProduct.images &&
-          selectedProduct.images.map((item, idx) => (
+          selectedProduct.images.map((image, idx) => (
             <div
               className="relative w-full aspect-square bg-slate-100"
               key={idx}
+              onClick={() => openModalAndScrollToImage(image)}
             >
               <Image
-                src={item.node.originalSrc}
+                src={image.node.originalSrc}
                 alt="imagehere"
                 layout="fill"
                 objectFit="cover"

@@ -199,7 +199,6 @@ export const ProductForm = ({ product }) => {
               <button
                 onClick={() => {
                   addToCart(selectedVariant);
-                  console.log(selectedVariant);
                 }}
                 className="w-full px-2 py-3 mt-6 text-xl font-bold text-white bg-black hover:bg-gray-800"
               >

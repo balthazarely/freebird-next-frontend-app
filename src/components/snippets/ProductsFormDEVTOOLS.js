@@ -30,6 +30,12 @@ export default function ProductsFormDEVTOOLS({
             <span className="font-bold">{selectedProduct.color}</span>
           </div>
           <div>
+            isAvailable:
+            <span className="font-bold bg-white">
+              {selectedProduct.isAvailable}
+            </span>
+          </div>
+          <div>
             selected id: <span className="font-bold">{selectedProduct.id}</span>
           </div>
         </div>
