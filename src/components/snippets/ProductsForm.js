@@ -61,7 +61,7 @@ export default function ProductsForm({ products, name }) {
   }, [selectedOptions]);
 
   function openModalAndScrollToImage(image) {
-    setShowModal(true);
+    let foundImage = setShowModal(true);
   }
 
   function changeOptions(name, value) {

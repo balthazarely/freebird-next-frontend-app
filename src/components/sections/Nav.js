@@ -8,6 +8,7 @@ import { CartContext } from "../../context/cartContext";
 import Image from "next/image";
 
 const navigation = [
+  { name: "All", href: "/all-shoes" },
   { name: "Boots", href: "/collections/boots" },
   { name: "Men", href: "/collections/mens" },
 ];
