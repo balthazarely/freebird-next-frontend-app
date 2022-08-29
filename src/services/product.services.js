@@ -1,5 +1,42 @@
 import { ShopifyData } from "../services/shopify.services";
 
+export async function paginateAllProducts(cursor) {
+  const query = `{
+    products(first: 1 ${
+      cursor ? "after:" + '"' + cursor + '"' : ""
+    } query: "color=leopard") {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          handle
+          id
+          title
+          tags
+          images(first: 5) {
+            edges {
+              node {
+                originalSrc
+                altText
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  `;
+
+  const response = await ShopifyData(query);
+  console.log(response);
+  const slugs = response ? response : [];
+  return slugs;
+}
+
 export async function getAllProducts() {
   const query = `{
     products(first: 100) {
@@ -29,6 +66,56 @@ export async function getAllProducts() {
 
   const response = await ShopifyData(query);
   const slugs = response.products.edges ? response.products.edges : [];
+  return slugs;
+}
+
+export async function getAllProductsWithTag(
+  paginateBy,
+  cursor,
+  color,
+  gender,
+  heel,
+  priceGreaterThan,
+  priceLessThan
+) {
+  const query = `{
+    products(first: ${paginateBy}, ${
+    cursor ? "after:" + '"' + cursor + '"' : ""
+  } query: "${color} AND ${gender} AND ${heel} AND variants.price:>${priceGreaterThan} AND variants.price:<${priceLessThan}") {
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          handle
+          id
+          title
+          tags
+          variants(first: 12){
+            edges {
+              node {
+                title
+                availableForSale
+              }
+            }
+          }
+          images(first: 5) {
+            edges {
+              node {
+                originalSrc
+                altText
+              }
+            }
+          }
+        }
+      }
+    }
+  }`;
+
+  const response = await ShopifyData(query);
+  const slugs = response ? response : [];
   return slugs;
 }
 
@@ -82,3 +169,60 @@ export async function getProduct(handle) {
 
   return product;
 }
+
+/// THIS COULD BE USEFUl
+// {
+//   products(first: 50, query: "variants.price:>200") {
+//     edges {
+//       node {
+//         title
+//         tags
+//         variantBySelectedOptions(selectedOptions: [{name: "Size", value: "11 "}]) {
+//           id
+//           title
+//           priceV2 {
+//             amount
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+// {
+//   products(first: 50, query:"variants.price:>200") {
+//     edges {
+//       node {
+//         title
+//         tags
+
+//         variantBySelectedOptions(selectedOptions: [{name: "Size", value: "11"}]) {
+//           id
+//           title
+//           priceV2 {
+//             amount
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+// {
+//   products(first: 50, query: "variants.price:>350 AND variants.price:<600") {
+//     edges {
+//       node {
+//         title
+//         tags
+
+//         variantBySelectedOptions(selectedOptions: [{name: "Size", value: "6 "}]) {
+//           id
+//           title
+//           priceV2 {
+//             amount
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

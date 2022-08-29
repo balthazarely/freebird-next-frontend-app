@@ -68,8 +68,8 @@ export const ProductForm = ({ product }) => {
     defaultValues[item.name] = item.values[0];
   });
 
-  console.log(product, "this is it product");
-  console.log(allVariantOptions, "this is it allVariantOptions");
+  // console.log(product, "this is it product");
+  // console.log(allVariantOptions, "this is it allVariantOptions");
 
   const [selectedVariant, setSelectedVariant] = useState(allVariantOptions[0]);
   const [selectedOptions, setSelectedOptions] = useState(defaultValues);
@@ -199,7 +199,6 @@ export const ProductForm = ({ product }) => {
               <button
                 onClick={() => {
                   addToCart(selectedVariant);
-                  console.log(selectedVariant);
                 }}
                 className="w-full px-2 py-3 mt-6 text-xl font-bold text-white bg-black hover:bg-gray-800"
               >

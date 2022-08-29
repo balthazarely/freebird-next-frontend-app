@@ -1,31 +1,50 @@
-import { getAllProducts } from "../services/product.services";
-import PageHero from "../components/snippets/PageHero";
 import ProductCard from "../components/snippets/ProductCard";
+import { useEffect, useState } from "react";
+import { getAllProductsTest } from "../services/test.querys";
+import ProductFilter from "../components/snippets/ProductFilter";
+import SelectedProductFilter from "../components/snippets/SelectedProductFilter";
+import Loader from "../components/snippets/Loader";
+import Image from "next/image";
 
-export default function Home({ products }) {
+export default function Home() {
   return (
-    <>
-      <PageHero />
-      <div className="px-6 mx-auto max-w-7xl">
-        <h2 className="mb-12 text-4xl font-extrabold text-gray-900">
-          All Products
-        </h2>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-          {products.map((product, idx) => (
-            <ProductCard key={idx} product={product} />
-          ))}
-        </div>
+    <div className="overflow-hidden  max-w-screen">
+      <div
+        className="pt-2"
+        style={{ position: "relative", width: "100vw", height: "50.66vw" }}
+      >
+        <Image src="/hero-image.webp" layout="fill" objectFit="cover" />
       </div>
-    </>
+      <div
+        className="pt-2"
+        style={{ position: "relative", width: "100vw", height: "50.66vw" }}
+      >
+        <Image
+          src="/contest-stagecoach-hero.jpg"
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
+      <div
+        className="pt-2"
+        style={{ position: "relative", width: "100vw", height: "50.66vw" }}
+      >
+        <Image
+          src="/freebird-cowboy-hero.png"
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
+    </div>
   );
 }
 
-export async function getStaticProps() {
-  const products = await getAllProducts();
+// export async function getStaticProps() {
+//   const products = await getAllProducts();
 
-  return {
-    props: {
-      products,
-    },
-  };
-}
+//   return {
+//     props: {
+//       products,
+//     },
+//   };
+// }
